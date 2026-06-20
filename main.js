@@ -103,8 +103,8 @@ function bootSystem() {
 
 function initializeInfoPanel() {
     if (gitRepoLink) {
-        gitRepoLink.href = "https://github.com/your-repo-url";
-        gitRepoLink.textContent = "Edit project repo link";
+        gitRepoLink.href = "https://github.com/ChinmoyDeb/ai-exam-proctor";
+        gitRepoLink.textContent = "https://github.com/ChinmoyDeb/ai-exam-proctor";
     }
     applySavedTheme();
 }
