@@ -1,49 +1,265 @@
 # Autonomous AI Exam Proctoring Dashboard
 
-A web-based dashboard demonstrating a browser-native Autonomous AI exam proctoring experience.
+## Live Demo
 
-## What it does
+**Try the deployed application:**
+https://ai-exam-proctor-gilt.vercel.app/
 
-- Monitors a live webcam feed for face presence and head orientation.
-- Detects potential integrity issues such as candidate looking away or leaving the frame.
-- Runs object detection to identify prohibited items like phones and secondary screens.
-- Captures evidence snapshots and presents a compliance feed.
-- Exports recorded incidents as a ZIP archive.
+Users can access the live dashboard using the link above and test the complete proctoring workflow in real time.
 
-## Files
+## Overview
 
-- `index.html` — dashboard UI, dark mode, and modal help overlay.
-- `main.js` — camera handling, MediaPipe face tracking, YOLO inference dispatch, and export logic.
-- `workers/yoloWorker.js` — background YOLO inference worker.
-- `models/` — model assets used by the dashboard.
-- `vendor/` — MediaPipe and ONNX runtime dependencies.
+Autonomous AI Exam Proctoring Dashboard is a browser-native web application that performs real-time candidate monitoring using MediaPipe Face Landmarker, ONNX Runtime, and YOLO object detection. The system runs entirely in the browser and requires no backend server.
 
-## How to run
+The dashboard monitors face presence, head orientation, and prohibited objects while maintaining a live incident feed with evidence snapshots and ZIP export support.
 
-1. Open a terminal in the repository root.
-2. Start a simple local server, for example:
-   ```bash
-   python -m http.server 8000
-   ```
-3. Open `http://localhost:8000` in a modern browser.
-4. Click `Start Live Session` and allow camera access.
+---
 
-## How to test
+## Features
 
-- Position your face in the webcam frame.
-- Turn your head away to trigger face orientation alerts.
-- Remove your face from the frame to trigger absence alerts.
-- Place a phone or another screen in view to test object detection.
-- Use `Export ZIP` to download incident snapshots.
-- Use `Purge System Logs` to clear the current test data.
+* Real-time webcam monitoring
+* Face presence detection
+* Head orientation and attention tracking
+* Face absence detection
+* Detection of prohibited objects
+* Cell phone detection
+* Secondary screen and laptop detection
+* Automatic violation logging
+* Evidence snapshot capture
+* Compliance event feed
+* Export violations as ZIP archive
+* Dark mode support
+* Browser-only inference
+* No backend required
 
-## Dark mode
+---
 
-- Use the `Dark Mode` toggle in the header to switch themes.
-- The choice is saved in browser storage.
+## System Architecture
 
-## Notes
+### Frontend
 
-- A modern browser with camera access is required.
-- If the media or worker scripts fail, reload the page and ensure the models are accessible.
-- Update the GitHub repo link in `index.html` when you push to your repository.
+#### `index.html`
+
+* Dashboard UI
+* Controls
+* Modal dialog
+* Dark mode support
+* Incident feed
+
+#### `main.js`
+
+* Camera initialization
+* Application lifecycle
+* Face tracking
+* YOLO dispatch
+* Overlay rendering
+* Violation logging
+* Snapshot generation
+* ZIP export
+
+### Machine Learning Components
+
+#### MediaPipe Face Landmarker
+
+Used for:
+
+* Face detection
+* Face presence verification
+* Head orientation estimation
+* Attention monitoring
+
+Model:
+
+`models/face_landmarker.task`
+
+#### YOLO Object Detection
+
+Used for detecting prohibited objects:
+
+* Cell Phone
+* Laptop / Secondary Screen
+
+Model:
+
+`models/yolo26s.onnx`
+
+Worker:
+
+`workers/yoloWorker.js`
+
+---
+
+## Runtime Dependencies
+
+### MediaPipe
+
+Located in:
+
+`vendor/mediapipe/`
+
+Contains:
+
+* vision_bundle.mjs
+* vision_bundle.cjs
+* WASM runtime files
+
+### ONNX Runtime Web
+
+Located in:
+
+`vendor/onnxruntime/`
+
+Contains:
+
+* ort.all.min.js
+* WASM runtime support files
+
+---
+
+## Detection Capabilities
+
+### Face Monitoring
+
+The system detects:
+
+* Face present
+* Face absent
+* Candidate looking away
+* Head yaw angle deviation
+
+### Object Detection
+
+The dashboard identifies:
+
+* Cell phones
+* Secondary screens
+* Laptops
+
+---
+
+## Violation Logging
+
+Every violation generates:
+
+* Timestamp
+* Event category
+* Evidence snapshot
+* Downloadable image
+* Incident card in the compliance feed
+
+Duplicate violations are automatically suppressed using cooldown intervals.
+
+---
+
+## Export Functionality
+
+The dashboard supports:
+
+* Individual image downloads
+* ZIP export of all violations
+* Feed cleanup using Purge System Logs
+
+---
+
+## File Structure
+
+```text
+.
+├── index.html
+├── main.js
+├── vercel.json
+├── models
+│   ├── face_landmarker.task
+│   └── yolo26s.onnx
+├── workers
+│   └── yoloWorker.js
+├── vendor
+│   ├── mediapipe
+│   └── onnxruntime
+└── README.md
+```
+
+---
+
+## Running Locally
+
+Start a local server:
+
+```bash
+python -m http.server 8000
+```
+
+or
+
+```bash
+python server.py
+```
+
+Open:
+
+`http://localhost:8000`
+
+Allow camera access and click **Start Live Session**.
+
+---
+
+## Testing
+
+### Face Monitoring
+
+* Keep your face inside the frame.
+* Look away from the screen.
+* Leave the frame completely.
+
+### Object Detection
+
+Show:
+
+* A mobile phone
+* A laptop
+* Another screen
+
+Violations will appear automatically in the compliance feed.
+
+### Export
+
+Use:
+
+* Export ZIP
+* Purge System Logs
+
+---
+
+## Browser Requirements
+
+* Chromium-based browser recommended
+* Webcam access enabled
+* JavaScript enabled
+* WebAssembly support
+* Cross-Origin Isolation support
+
+---
+
+## Deployment
+
+The application is designed as a static website and can be deployed on:
+
+* Vercel
+* Netlify
+* GitHub Pages
+
+No backend infrastructure is required.
+
+---
+
+## Repository
+
+GitHub Repository:
+
+https://github.com/ChinmoyDeb/ai-exam-proctor
+
+---
+
+## License
+
+This project is intended for educational, research, and demonstration purposes.
